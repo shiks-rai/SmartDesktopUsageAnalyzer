@@ -1,0 +1,39 @@
+{
+  "date": "2025-07-14",
+  "total_minutes": 25,
+  "apps": [
+    {
+      "app": "Repository search results and 3 more pages - Personal - Microsoft\u200b Edge",
+      "minutes": 17
+    },
+    {
+      "app": "Windows PowerShell",
+      "minutes": 3
+    },
+    {
+      "app": "Accessibility Analyzer App Plan - Google Chrome",
+      "minutes": 1
+    },
+    {
+      "app": "Command Prompt - python  -m streamlit run tracker.py",
+      "minutes": 1
+    },
+    {
+      "app": "Task Switching",
+      "minutes": 0
+    },
+    {
+      "app": "Streamlit - Google Chrome",
+      "minutes": 0
+    },
+    {
+      "app": "WhatsApp",
+      "minutes": 0
+    },
+    {
+      "app": "ChatGPT and 3 more pages - Personal - Microsoft\u200b Edge",
+      "minutes": 0
+    }
+  ],
+  "suggestion": "\u2705 Good control \u2014 no overused apps detected today."
+}
