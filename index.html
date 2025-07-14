@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desktop Usage Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      color: #222;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+      width: 100%;
+      max-width: 700px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .stat-box {
+      background: #eef2f7;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .suggestion {
+      color: #b71c1c;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Desktop App Usage Summary</h1>
+  <div class="card">
+    <h2 id="date"></h2>
+    <div class="stats">
+      <div class="stat-box">
+        <strong id="totalTime">--</strong>
+        <div>Total Time (min)</div>
+      </div>
+      <div class="stat-box">
+        <strong id="avgTime">--</strong>
+        <div>Avg Time/App</div>
+      </div>
+      <div class="stat-box">
+        <strong id="sessionCount">--</strong>
+        <div>Active Sessions</div>
+      </div>
+    </div>
+    <div class="suggestion" id="suggestion"></div>
+  </div>
+  <div class="card">
+    <canvas id="usageChart" height="100"></canvas>
+  </div>
+
+  <script>
+    fetch("logs/2025-07-14_summary.json") // Update with actual filename
+      .then((response) => response.json())
+      .then((data) => {
+        document.getElementById("date").innerText = `📅 Date: ${data.date}`;
+        document.getElementById("totalTime").innerText = data.total_minutes;
+
+        const sessionCount = data.apps.length;
+        const avg = sessionCount > 0 ? (data.total_minutes / sessionCount).toFixed(1) : 0;
+
+        document.getElementById("avgTime").innerText = avg;
+        document.getElementById("sessionCount").innerText = sessionCount;
+        document.getElementById("suggestion").innerText = data.suggestion || "";
+
+        const labels = data.apps.map((entry) => entry.app);
+        const values = data.apps.map((entry) => entry.minutes);
+
+        const ctx = document.getElementById("usageChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Time Spent (minutes)",
+                data: values,
+                backgroundColor: "rgba(54, 162, 235, 0.7)",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      })
+      .catch((error) => {
+        document.getElementById("suggestion").innerText =
+          "❌ Error loading usage summary. Make sure the JSON file exists.";
+      });
+  </script>
+</body>
+</html>
